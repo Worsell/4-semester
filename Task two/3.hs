@@ -1,5 +1,5 @@
-f n  = mod n 10
-g n = div n 10
+mod' n  = mod n 10
+div' n = div n 10
 
-function n  |  length (show n) == 1 = n
-			|  otherwise = f n + (function (g n)) 
+summNumber n  |  length (show n) == 1 = n
+			|  otherwise = div' n + (summNumber (mod' n)) 
