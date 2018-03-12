@@ -1,9 +1,11 @@
+// Простая версия по дефолту
+
 f n  = [2^^x |x <-[1..n]]
 
-function n = d (function' (2^^n, []))
+// Версия сделаная руками
+pow n = d (pow' (2^^n, []))
 
-d (n,l) = l
 
-function' (n, l)
+pow' (n, l)
 	| n == 1.0 = (0,(1:l))
-	| otherwise = function' ((n/2), (n:l))
+	| otherwise = pow' ((n/2), (n:l))
