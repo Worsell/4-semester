@@ -1,5 +1,5 @@
-function n l = function' (n, l, 0)
+summNumberOfDigit number' l = summNumberOfDigit' (number', l, 0)
 		
-function' (n, l, k)
-		| head l == n = (n ,l ,k)
-		| otherwise = function' (n, tail l, (k+1))
+summNumberOfDigit' (number, list, k)
+		| head list == number = (number, list ,k)
+		| otherwise = summNumberOfDigit' (number, tail list, (k+1))
