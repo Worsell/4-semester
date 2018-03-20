@@ -1,5 +1,5 @@
-printRhombus :: Int -> IO ()
-printRhombus n = putStr $ unlines $ (map concat (getRow 1 (n+1))) ++ (tail (reverse (map concat (getRow 1 (n+1)))))
+printF :: Int -> IO ()
+printf n = putStr ( unlines ((map concat (getRow 1 (n+1))) ++ (tail (reverse (map concat (getRow 1 (n+1)))))))
 
 getRow :: Int -> Int -> [[[Char]]]
 getRow inc n
