@@ -1,23 +1,18 @@
 -- поддерживаемые типы скобок {[()]}
+-- ( )
 
 
-parseStr string = parse string (0, 0, 0, True) 
-				where parse (l:ls) (x, y, z, b)
-					| length ls == 0 = finalControl (check l (x, y, z, b))
-					| otherwise = parse ls (check l (x, y, z ,b))
+parseStr ::[Char] -> Bool
 
-check l (x, y, z, b) 
-		| not b = (x,y,z,b)
-		| otherwise = case l of
-						']' -> if (x-1) < 0 then (x-1, y, z, False) else (x-1, y, z, b)
-						')' -> if (y-1) < 0 then (x, y-1, z, False) else (x, y-1, z, b)
-						'}' -> if (z-1) < 0 then (x, y, z-1, False) else (x, y, z-1, b)
-						'[' -> (x+1, y, z, b)
-						'(' -> (x, y+1, z, b)
-						'{' -> (z, y, z+1, b)
-						
-finalControl (x, y, z, b)
-			| x /= 0 = False
-			| y /= 0 = False
-			| z /= 0 = False
-			| otherwise = b
+parseStr string = parseHelp string []
+
+parseHelp :: [Char] -> [Char] -> Bool
+parseHelp string stack
+	| (length string == 0) = if (length stack == 0) then True else False
+	| otherwise = case head string of
+						'[' -> parseHelp (tail string) (head string : stack)
+						'(' -> parseHelp (tail string) (head string : stack)
+						'{' -> parseHelp (tail string) (head string : stack)
+						']' -> if (head stack == '[') then parseHelp (tail string) (tail stack) else False
+						')' -> if (head stack == '(') then parseHelp (tail string) (tail stack) else False
+						'}' -> if (head stack == '{') then parseHelp (tail string) (tail stack) else False
