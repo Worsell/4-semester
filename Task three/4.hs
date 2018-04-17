@@ -8,7 +8,7 @@ parseStr string = parseHelp string []
 
 parseHelp :: [Char] -> [Char] -> Bool
 parseHelp string stack
-	| (length string == 0) = if (length stack == 0) then True else False
+	| (length string == 0) = length stack == 0
 	| otherwise = case head string of
 						'[' -> parseHelp (tail string) (head string : stack)
 						'(' -> parseHelp (tail string) (head string : stack)
