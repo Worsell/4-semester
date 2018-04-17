@@ -5,8 +5,9 @@
 list :: (Ord a, Read a, Show a) => [a]
 list = []
 
+
 addValueToSortedlist :: (Ord a, Read a, Show a) => a -> [a] -> [a]
-addValueToSortedlist value list =  (filter (\x -> (x <= value)) list) ++ [value] ++ (filter (\x -> (x > value)) list)
+addValueToSortedlist value (x:xs) = if (x < value) then  x : addValueToSortedlistHelp value xs else value:x:xs 
 
 
 removeValueFromSortedList :: (Ord a, Read a, Show a) => a -> [a] -> [a]
