@@ -1,6 +1,6 @@
-import System.IO
+ï»¿import System.IO
 
 generated n = [1..n] >>= (\x -> [x*y | y <-[1..n]])
 
---Òî æå ñàìîå, íî ğàçâ¸ğíóòî
+--Ğ¢Ğ¾ Ğ¶Ğµ ÑĞ°Ğ¼Ğ¾Ğµ, Ğ½Ğ¾ Ñ€Ğ°Ğ·Ğ²Ñ‘Ñ€Ğ½ÑƒÑ‚Ğ¾
 generated' n = [1..n] >>= (\x -> ([1..n] >>= (\y -> return (x*y))))
