@@ -14,13 +14,14 @@
 --7 = (7,0,0,0,0,0,0)
 
 -- Ну вроде красиво выводит, только сами функции вывода рекурсивные.
-getCombinaton :: Int -> [[Int]]
-getCombinaton 0 = [[]]
-getCombinaton n = do
+getCombination :: Int -> [[Int]]
+getCombination 0 = [[]]
+getCombination n = do
 	x <- [1..n]
-	xs <- getCombinaton(n-x)
+	xs <- getCombination(n-x)
 	[x:xs]
 
+-- putStrLn $ goodPrint $ getCombination 5
 -- Красивый вывод без фильтра.
 goodPrint :: [[Int]] -> [Char]
 goodPrint [] = []
@@ -33,7 +34,8 @@ goodPrinthelper' :: [Int] -> [Char]
 goodPrinthelper' [] = []
 goodPrinthelper' (x:xs) = "+" ++ (show x) ++ goodPrinthelper' xs
 
---Красивый вывод с повторениям.
+-- putStrLn $ gp (getPrintCombination (getCombination 5) list)
+--Красивый вывод без повторений.
 gp :: [[Int]] -> [Char]
 gp [] = []
 gp (x:xs) = (gph' x 0) ++ "\n" ++ gp xs 
