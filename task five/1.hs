@@ -1,4 +1,4 @@
---     1 2 3 4 5 6 7
+ï»¿--     1 2 3 4 5 6 7
 --7 = (1,1,1,1,1,1,1)
 --7 = (2,1,1,1,1,1,0)
 --7 = (2,2,1,1,1,0,0)
@@ -13,8 +13,7 @@
 --7 = (6,1,0,0,0,0,0)
 --7 = (7,0,0,0,0,0,0)
 
--- Àëãîðèòì ïðèíèìàåò n: Äëÿ ÷èñåë k èç 1..n ñòàâèì ïåðâûì ÷èñëîì k è çàïóñêàåì ðåêóðñèâíî àëãîðèòì îò n-k.
-
+-- ÐÑƒ Ð²Ñ€Ð¾Ð´Ðµ ÐºÑ€Ð°ÑÐ¸Ð²Ð¾ Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ñ‚, Ñ‚Ð¾Ð»ÑŒÐºÐ¾ ÑÐ°Ð¼Ð¸ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð²Ñ‹Ð²Ð¾Ð´Ð° Ñ€ÐµÐºÑƒÑ€ÑÐ¸Ð²Ð½Ñ‹Ðµ.
 getCombinaton :: Int -> [[Int]]
 getCombinaton 0 = [[]]
 getCombinaton n = do
@@ -22,7 +21,7 @@ getCombinaton n = do
 	xs <- getCombinaton(n-x)
 	[x:xs]
 
--- Âûâîä áåç ôèëüòðà.
+-- ÐšÑ€Ð°ÑÐ¸Ð²Ñ‹Ð¹ Ð²Ñ‹Ð²Ð¾Ð´ Ð±ÐµÐ· Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°.
 goodPrint :: [[Int]] -> [Char]
 goodPrint [] = []
 goodPrint (x:xs) = (goodPrinthelper x) ++ "\n" ++ goodPrint xs	
@@ -34,7 +33,7 @@ goodPrinthelper' :: [Int] -> [Char]
 goodPrinthelper' [] = []
 goodPrinthelper' (x:xs) = "+" ++ (show x) ++ goodPrinthelper' xs
 
---Âûâîä ñ ôèëüòðîì ïî ïîâòîðåíèÿì.
+--ÐšÑ€Ð°ÑÐ¸Ð²Ñ‹Ð¹ Ð²Ñ‹Ð²Ð¾Ð´ Ñ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€ÐµÐ½Ð¸ÑÐ¼.
 gp :: [[Int]] -> [Char]
 gp [] = []
 gp (x:xs) = (gph' x 0) ++ "\n" ++ gp xs 
@@ -50,29 +49,29 @@ p :: Int -> Int -> [Char]
 p k 0 = []
 p k n = "+" ++ show k ++ (p k (n-1))
 
--- ×èñëî ðàçìåðíîñòü
+-- Ð§Ð¸ÑÐ»Ð¾ Ñ€Ð°Ð·Ð¼ÐµÑ€Ð½Ð¾ÑÑ‚ÑŒ
 getEvector :: Int -> Int -> [Int]
 getEvector _ 0 = []
 getEvector 0 y = 1 : getEvector (-1) (y-1)
 getEvector x y = 0 : getEvector (x-1) (y-1)
 
--- Äâà e âåêòîðà
+-- Ð”Ð²Ð° e Ð²ÐµÐºÑ‚Ð¾Ñ€Ð°
 fromEvector :: [Int] -> [Int] -> [Int]
 fromEvector [] [] = [] 
 fromEvector (x:xs) (y:ys) = (x+y) : fromEvector xs ys
 
--- Ðàñêëàäûâàåò ñóììó ïî áàçèñó 0..n
+-- Ð Ð°ÑÐºÐ»Ð°Ð´Ñ‹Ð²Ð°ÐµÑ‚ ÑÑƒÐ¼Ð¼Ñƒ Ð¿Ð¾ Ð±Ð°Ð·Ð¸ÑÑƒ 0..n
 getVector :: [Int] -> Int -> [Int]
 getVector [] n = [0 | x <- [0..n]]
 getVector (x:xs) n = fromEvector (getEvector x (n+1)) (getVector xs n)
 
--- Ïðîâåðêà íà òî, îäèí ëè ýòî âåêòîð
+-- ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ñ‚Ð¾, Ð¾Ð´Ð¸Ð½ Ð»Ð¸ ÑÑ‚Ð¾ Ð²ÐµÐºÑ‚Ð¾Ñ€
 isEquivalent :: [Int] -> [Int] -> Bool
 isEquivalent [] [] = True
 isEquivalent _ [] = False
 isEquivalent (x:xs) (y:ys) = if (x==y) then isEquivalent xs ys else False
 
--- Ïðîâåðêà íà òî, íóæíî ëè äîáàâëÿòü âåêòîð â ñïèñîê íà ïå÷àòü
+-- ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ñ‚Ð¾, Ð½ÑƒÐ¶Ð½Ð¾ Ð»Ð¸ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÑ‚ÑŒ Ð²ÐµÐºÑ‚Ð¾Ñ€ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº Ð½Ð° Ð¿ÐµÑ‡Ð°Ñ‚ÑŒ
 needToAdd :: [Int] -> [[Int]] -> Bool -> Bool
 needToAdd _ [] c = (not c)
 needToAdd x (y:ys) c = needToAdd x ys (c || (isEquivalent x y))
