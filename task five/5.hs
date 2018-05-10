@@ -18,23 +18,40 @@ derivative (x:xs) = ((length (x:xs) - 1) * x) : derivative xs
 
 
 -- help for insert
+-- берем n с конца элемент
 f :: Int -> [Int] -> Int
 f n list = last $ take (length list - n) list
 
+-- берем список состоящий из (n+1) элемента с конца включительно
 g  :: Int -> [Int] -> [Int]
 g 0 list = [f 0 list]
-g n list = (f n list) : (g (n-1) list)
+g n list
+	| n < 0 = []
+	| n >= 0 = (f n list) : (g (n-1) list)
 
-	
+
+-- элемент, текущий элемент, всего элементов, список
 insertHelper :: Int -> Int -> Int -> [Int] -> [Int]
 insertHelper element n k list 
 	| k == (length list - 1) = list
 	| n == k = element : insertHelper element n (k-1) list
 	| n /= k = 0 : insertHelper element n (k-1) list
--- end help for insert	
+
+{-
+
+3 5 [5,4,3,2,1,0]
+
+
+
+
+
+
+-}
+	
+-- end help for insert
 insert :: Int -> Int -> [Int] -> [Int]
 insert element n list 
-	| n < (length list-1) = (take (n-1) list) ++ [element] ++ g (n-1) list
+	| n < (length list-1) = (take ((length list) -n -1 ) list) ++ [element] ++ g (n-1) list
 	| n == (length list-1) = element : g (n-1) list
 	| n > (length list-1) = insertHelper element n n list
 
@@ -56,16 +73,17 @@ parseofMonom (a, b, (x:xs), tmp) = case x of
 	'7' -> parseofMonom (a, b, xs, tmp ++ [x])
 	'8' -> parseofMonom (a, b, xs, tmp ++ [x])
 	'9' -> parseofMonom (a, b, xs, tmp ++ [x])
-	'^' -> parseofMonom (read tmp :: Int, b, xs, "")
+	'^' -> parseofMonom (if (tmp /= "") then (read tmp :: Int) else 1, b, xs, "")
 	'-' -> parseofMonom (a, b, xs, tmp ++ [x])
 	_ -> parseofMonom (a,b,xs, tmp)
 
+	
 fs :: (Int,Int,[Char],[Char]) -> Int
 fs (x,y,z,k) = x
 sd :: (Int,Int,[Char],[Char]) -> Int
 sd (x,y,z,k) = y
 
--- Строка буфер полином -> полином	
+-- Строка буфер=моном полином -> полином	
 parseOfPolynomial :: [Char] -> [Char] -> [Int] -> [Int]
 parseOfPolynomial [] tmp polynomial = (insert (fs $ parseofMonom (0, 0, tmp, "")) (sd $ parseofMonom (0, 0, tmp, "")) polynomial)
 parseOfPolynomial (x:xs) tmp polynomial = case x of
@@ -85,6 +103,8 @@ polynomialToString (x:xs)
 	| x==0 = polynomialToString xs
 	| (x > 0) = if (x==1) then "+x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs) else "+" ++ (show x) ++ "x^" ++ show (length (x:xs)-1) ++ polynomialToString xs
 	| (x < 0) = if (x==(-1)) then "-x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs) else (show x) ++ "x^" ++ show (length (x:xs)-1) ++ polynomialToString xs
+
+	
 task :: [Char] -> [Char]
 task polynomial = polynomialToString $ derivative $ parseOfPolynomial polynomial "" [] 
 
