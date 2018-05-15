@@ -75,6 +75,7 @@ parseofMonom (a, b, (x:xs), tmp) = case x of
 	'9' -> parseofMonom (a, b, xs, tmp ++ [x])
 	'^' -> parseofMonom (if (tmp /= "") then (read tmp :: Int) else 1, b, xs, "")
 	'-' -> parseofMonom (a, b, xs, tmp ++ [x])
+	'x' -> parseofMonom (a, 1, xs, tmp)
 	_ -> parseofMonom (a,b,xs, tmp)
 
 	
@@ -91,20 +92,49 @@ parseOfPolynomial (x:xs) tmp polynomial = case x of
 	'+' -> parseOfPolynomial xs "" (insert (fs $  parseofMonom (0, 0, tmp, "")) (sd $ parseofMonom (0, 0, tmp, "")) polynomial)
 	_ -> parseOfPolynomial xs (tmp ++[x]) polynomial
 
-sign :: Int -> [Char]
-sign x | x < 0 = ""
-       | x == 0 = ""
-       | x > 0 = "+"
-
-polynomialToString :: [Int] -> [Char]
-polynomialToString [] = "0"
-polynomialToString (x:[]) = if (x /=0) then sign x ++ show x else ""
-polynomialToString (x:xs)
-	| x==0 = polynomialToString xs
-	| (x > 0) = if (x==1) then "+x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs) else "+" ++ (show x) ++ "x^" ++ show (length (x:xs)-1) ++ polynomialToString xs
-	| (x < 0) = if (x==(-1)) then "-x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs) else (show x) ++ "x^" ++ show (length (x:xs)-1) ++ polynomialToString xs
-
+sign :: Int -> Bool -> [Char]
+sign x b 
+	| b = ""
+	| x < 0 = ""
+	| x == 0 = ""
+	| x > 0 = "+"
+		 
+polynomialToString :: [Int] -> Bool -> [Char]
+polynomialToString [] _ = "0"
+polynomialToString (x:[]) b = if (x /=0) then (sign x b) ++ show x else ""
+polynomialToString (x:xs) b
+	| x == 0 = polynomialToString xs False
+	| (x > 0) = if ( x == 1 ) 
+		then if (b) 
+			then if (length (x:xs)-1) == 1
+				then "x" ++ (polynomialToString xs False)
+				else "x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False)
+			else if (length (x:xs)-1) == 1
+				then "+x" ++ (polynomialToString xs False)
+				else "+x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False)
+		else if (b) 
+			then if (length (x:xs)-1) == 1
+				then (show x) ++ "x" ++ (polynomialToString xs False)
+				else (show x) ++ "x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False)
+			else if (length (x:xs)-1) == 1
+				then "+" ++ (show x) ++ "x" ++ (polynomialToString xs False)
+				else "+" ++ (show x) ++ "x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False) 
+	| (x < 0) = if ( x == (-1) ) 
+		then if (b) 
+			then if (length (x:xs)-1) == 1
+				then "-x" ++ (polynomialToString xs False)
+				else "-x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False)
+			else if (length (x:xs)-1) == 1
+				then "+x" ++ (polynomialToString xs False)
+				else "+x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False)
+		else if (b) 
+			then if (length (x:xs)-1) == 1
+				then (show x) ++ "x" ++ (polynomialToString xs False)
+				else (show x) ++ "x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False)
+			else if (length (x:xs)-1) == 1
+				then (show x) ++ "x" ++ (polynomialToString xs False)
+				else (show x) ++ "x^" ++ show (length (x:xs)-1) ++ (polynomialToString xs False)
 	
 task :: [Char] -> [Char]
-task polynomial = polynomialToString $ derivative $ parseOfPolynomial polynomial "" [] 
+task polynomial = polynomialToString (derivative $ parseOfPolynomial polynomial "" []) True 
 
