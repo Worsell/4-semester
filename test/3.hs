@@ -1,5 +1,4 @@
 import System.Random
-import System.IO.Unsafe  -- be careful!                                         
 
 
 randomList :: Int -> [Int]
